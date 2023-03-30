@@ -24,22 +24,22 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route_table_association" "private-ap-northeast-2a" {
-  subnet_id = aws_subnet.private-ap-northeast-2a.id
+resource "aws_route_table_association" "private-ap-southeast-2a" {
+  subnet_id = aws_subnet.private-ap-southeast-2a.id
   route_table_id = aws_route_table.private.id
 }
 
-resource "aws_route_table_association" "private-ap-northeast-2b" {
-  subnet_id = aws_subnet.private-ap-northeast-2b.id
+resource "aws_route_table_association" "private-ap-southeast-2b" {
+  subnet_id = aws_subnet.private-ap-southeast-2b.id
   route_table_id = aws_route_table.private.id
 }
 
-resource "aws_route_table_association" "public-ap-northeast-2a" {
-  subnet_id = aws_subnet.public-ap-northeast-2a.id
+resource "aws_route_table_association" "public-ap-southeast-2a" {
+  subnet_id = aws_subnet.public-ap-southeast-2a.id
   route_table_id = aws_route_table.public.id
 }
 
-resource "aws_route_table_association" "public-ap-northeast-2b" {
-  subnet_id = aws_subnet.public-ap-northeast-2b.id
+resource "aws_route_table_association" "public-ap-southeast-2b" {
+  subnet_id = aws_subnet.public-ap-southeast-2b.id
   route_table_id = aws_route_table.public.id
 }

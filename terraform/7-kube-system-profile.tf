@@ -24,8 +24,8 @@ resource "aws_eks_fargate_profile" "kube-system" {
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
   subnet_ids = [
-    aws_subnet.private-ap-northeast-2a.id,
-    aws_subnet.private-ap-northeast-2b.id
+    aws_subnet.private-ap-southeast-2a.id,
+    aws_subnet.private-ap-southeast-2b.id
   ]
 
     selector {
@@ -74,8 +74,8 @@ resource "aws_eks_fargate_profile" "staging" {
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
   subnet_ids = [
-    aws_subnet.private-ap-northeast-2a.id,
-    aws_subnet.private-ap-northeast-2b.id
+    aws_subnet.private-ap-southeast-2a.id,
+    aws_subnet.private-ap-southeast-2b.id
   ]
 
   selector {
