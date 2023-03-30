@@ -1,5 +1,5 @@
-resource "aws_iam_role" "eks-fargate-profile" {
-  name = "eks-fargate-profile"
+resource "aws_iam_role" "eks-kthong-fargate-profile" {
+  name = "eks-kthong-fargate-profile"
 
   assume_role_policy = jsonencode({
     Statement=[{
@@ -13,15 +13,15 @@ resource "aws_iam_role" "eks-fargate-profile" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "eks-fargate-profile" {
+resource "aws_iam_role_policy_attachment" "eks-kthong-fargate-profile" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
-  role = aws_iam_role.eks-fargate-profile.name
+  role = aws_iam_role.eks-kthong-fargate-profile.name
 }
 
 resource "aws_eks_fargate_profile" "kube-system" {
-  cluster_name = aws_eks_cluster.cluster.name
+  cluster_name = aws_eks_cluster.kthong-cluster.name
   fargate_profile_name = "kube-system"
-  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
+  pod_execution_role_arn = aws_iam_role.eks-kthong-fargate-profile.arn
 
   subnet_ids = [
     aws_subnet.private-ap-southeast-2a.id,
@@ -34,7 +34,7 @@ resource "aws_eks_fargate_profile" "kube-system" {
 }
 
 data "aws_eks_cluster_auth" "eks" {
-    name = aws_eks_cluster.cluster.id
+    name = aws_eks_cluster.kthong-cluster.id
 }
 
 resource "null_resource" "k8s_patcher" {
@@ -43,18 +43,18 @@ resource "null_resource" "k8s_patcher" {
   ]
 
   triggers = {
-    endpoint = aws_eks_cluster.cluster.endpoint
-    ca_crt = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
+    endpoint = aws_eks_cluster.kthong-cluster.endpoint
+    ca_crt = base64decode(aws_eks_cluster.kthong-cluster.certificate_authority[0].data)
     token = data.aws_eks_cluster_auth.eks.token
   }
 
     provisioner "local-exec" {
     command = <<EOH
     cat >/tmp/ca.crt <<EOF
-    ${base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)}
+    ${base64decode(aws_eks_cluster.kthong-cluster.certificate_authority[0].data)}
     EOF
     kubectl \
-    --server="${aws_eks_cluster.cluster.endpoint}" \
+    --server="${aws_eks_cluster.kthong-cluster.endpoint}" \
     --certificate_authority=/tmp/ca.crt \
     --token="${data.aws_eks_cluster_auth.eks.token}" \
     patch deployment coredns \
@@ -69,9 +69,9 @@ resource "null_resource" "k8s_patcher" {
 }
 
 resource "aws_eks_fargate_profile" "staging" {
-  cluster_name           = aws_eks_cluster.cluster.name
+  cluster_name           = aws_eks_cluster.kthong-cluster.name
   fargate_profile_name   = "staging"
-  pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
+  pod_execution_role_arn = aws_iam_role.eks-kthong-fargate-profile.arn
 
   subnet_ids = [
     aws_subnet.private-ap-southeast-2a.id,

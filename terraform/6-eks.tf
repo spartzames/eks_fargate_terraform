@@ -1,4 +1,4 @@
-resource "aws_iam_role" "eks-cluster" {
+resource "aws_iam_role" "eks-kthong-cluster" {
   name = "eks-cluster-${var.cluster_name}"
 
   assume_role_policy = <<POLICY
@@ -19,12 +19,12 @@ POLICY
 
 resource "aws_iam_role_policy_attachment" "amazon-eks-cluster-policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role = aws_iam_role.eks-cluster.name
+  role = aws_iam_role.eks-kthong-cluster.name
 }
-resource "aws_eks_cluster" "cluster" {
+resource "aws_eks_cluster" "kthong-cluster" {
   name = var.cluster_name
   version = var.cluster_version
-  role_arn = aws_iam_role.eks-cluster.arn
+  role_arn = aws_iam_role.eks-kthong-cluster.arn
 
   vpc_config {
     endpoint_private_access = false
