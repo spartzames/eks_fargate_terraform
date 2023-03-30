@@ -18,7 +18,7 @@ resource "helm_release" "metrics-server" {
   version = "3.8.2"
 
   set {
-    name = "metrics.enables"
+    name = "metrics.enabled"
     value = false
   }
 
