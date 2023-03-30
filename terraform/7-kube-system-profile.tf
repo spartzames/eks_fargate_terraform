@@ -74,8 +74,8 @@ resource "aws_eks_fargate_profile" "staging" {
   pod_execution_role_arn = aws_iam_role.eks-fargate-profile.arn
 
   subnet_ids = [
-    aws_subnet.private-us-east-1a.id,
-    aws_subnet.private-us-east-1b.id
+    aws_subnet.private-ap-northeast-2a.id,
+    aws_subnet.private-ap-northeast-2b.id
   ]
 
   selector {
