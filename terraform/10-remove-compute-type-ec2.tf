@@ -1,3 +1,7 @@
+data "aws_eks_cluster_auth" "eks" {
+  name = aws_eks_cluster.cluster.id
+}
+
 resource "null_resource" "k8s_patcher" {
   depends_on = [aws_eks_fargate_profile.kube-system]
 
