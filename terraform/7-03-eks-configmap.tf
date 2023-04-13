@@ -8,9 +8,15 @@ resource "aws_iam_user" "kthong_admin_user" {
 locals {
   configmap_roles = [
     {
-      rolearn = "${aws_iam_role.eks-kthong-cluster.arn}"
-      username = "system:node:{{EC2PrivateDNSName}}"
-      groups = ["system:bootstrappers", "system:nodes"]
+      #rolearn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.eks_nodegroup_role.name}"
+      rolearn = "arn:aws:iam::789535401130:role/CCOE"
+      username = "ccoe"
+      groups = ["system:masters"]
+    },
+    {
+      rolearn = "${aws_iam_role.eks-kthong-fargate-profile.arn}"
+      username = "system:node:{{SessionName}}"
+      groups = ["system:bootstrappers", "system:nodes", "system:node-proxier"]
     }
   ]
   configmap_users = [

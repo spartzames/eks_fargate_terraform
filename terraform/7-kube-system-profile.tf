@@ -68,6 +68,7 @@ resource "null_resource" "k8s_patcher" {
   }
 }
 
+/*
 resource "aws_eks_fargate_profile" "staging" {
   cluster_name           = aws_eks_cluster.kthong-cluster.name
   fargate_profile_name   = "staging"
@@ -82,3 +83,4 @@ resource "aws_eks_fargate_profile" "staging" {
     namespace = "staging"
   }
 }
+*/
