@@ -1,8 +1,29 @@
 # AWS IAM User - Admin User with Full AWS Access
-resource "aws_iam_user" "kthong_admin_user" {
-  name = "kthong-eks-admin-01"  
+resource "aws_iam_user" "basic_user" {
+  name = "kthong-eks-basic-01"  
   path = "/"
   force_destroy = true
+}
+
+# Resource: AWS IAM User Policy - EKS Full Access
+resource "aws_iam_user_policy" "basic_user_eks_policy" {
+  name = "kthong-eks-full-access-policy"
+  user = aws_iam_user.basic_user.name
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "eks:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
 locals {
@@ -21,8 +42,8 @@ locals {
   ]
   configmap_users = [
     {
-      userarn = "${aws_iam_user.kthong_admin_user.arn}"
-      username = "${aws_iam_user.kthong_admin_user.name}"
+      userarn = "${aws_iam_user.basic_user.arn}"
+      username = "${aws_iam_user.basic_user.name}"
       groups = ["system:masters"]
     }
   ]
