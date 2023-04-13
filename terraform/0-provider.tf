@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 variable "cluster_name" {
-  default = "demo"
+  default = "cluster-kthong"
 }
 
 variable "cluster_version" {
