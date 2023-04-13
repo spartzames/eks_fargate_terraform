@@ -10,6 +10,10 @@ variable "cluster_version" {
   default = "1.22"
 }
 
+variable "cluster_service_ipv4_cidr" {
+  type = string
+}
+
 terraform {
   required_providers {
     aws = {
