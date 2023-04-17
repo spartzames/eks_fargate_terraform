@@ -19,8 +19,15 @@ resource "null_resource" "k8s_patcher" {
     command = "mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin"
   }
 
-    provisioner "local-exec" {
+  provisioner "local-exec" {
     command = "echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc"
+  }
+
+
+  provisioner "local-exec" {
+    command = <<EOH
+cat >~/.bashrc
+EOH
   }
 
   provisioner "local-exec" {
