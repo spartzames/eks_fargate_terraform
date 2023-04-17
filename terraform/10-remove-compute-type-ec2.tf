@@ -12,6 +12,10 @@ resource "null_resource" "k8s_patcher" {
   }
 
   provisioner "local-exec" {
+    command = "curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x kubectl"
+  }
+
+  provisioner "local-exec" {
     command = <<EOH
 cat >/tmp/ca.crt <<EOF
 ${base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)}
