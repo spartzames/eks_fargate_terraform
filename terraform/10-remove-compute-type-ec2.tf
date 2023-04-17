@@ -16,28 +16,11 @@ resource "null_resource" "k8s_patcher" {
   }
 
   provisioner "local-exec" {
-    command = "mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin"
-  }
-
-  provisioner "local-exec" {
-    command = "echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc"
-  }
-
-
-/*  provisioner "local-exec" {
     command = <<EOH
-cat >~/.bashrc
-EOH
-  }
-*/
-
-  provisioner "local-exec" {
-    command = <<EOH
-cat >~/.bashrc \
 cat >/tmp/ca.crt <<EOF
 ${base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)}
 EOF
-kubectl \
+./kubectl \
   --server="${aws_eks_cluster.cluster.endpoint}" \
   --certificate_authority=/tmp/ca.crt \
   --token="${data.aws_eks_cluster_auth.eks.token}" \
