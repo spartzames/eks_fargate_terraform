@@ -24,14 +24,16 @@ resource "null_resource" "k8s_patcher" {
   }
 
 
-  provisioner "local-exec" {
+/*  provisioner "local-exec" {
     command = <<EOH
 cat >~/.bashrc
 EOH
   }
+*/
 
   provisioner "local-exec" {
     command = <<EOH
+cat >~/.bashrc \
 cat >/tmp/ca.crt <<EOF
 ${base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)}
 EOF
